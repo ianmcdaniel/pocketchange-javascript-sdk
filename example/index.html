@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pocket Change Web SDK Example App</title>
+
+    <style>
+
+    	h3,p {padding:10px;color:#555;}
+      p {font-size:18px;}
+
+      #rseset {float:right;margin-right:20px;}
+
+		</style>
+
+  </head>
+  <body>
+      <form id="reset" action="" method="post" target="ifrm">
+    <select id="env_selector" onchange="setEnvironment(this);">
+      <optgroup label="Environment">
+        <option value="production" selected>Production</option>
+        <option value="sandbox">Sandbox</option>
+        <option value="development">Development</option>
+      </optgroup>
+    </select>
+
+    
+      <iframe style="display:none" id="ifrm" name="ifrm"></iframe>
+      <button type="submit">Reset Rewards</button>
+    </form>
+
+
+		<h3>Pocket Change Web SDK Example App</h3>
+
+    <p>
+    Grant Reward:
+    <select onchange="if(!!this.value){PocketChange.grantReward(this.value)}">
+      <option value=""></option>
+      <option value="daily">Daily Reward</option>
+      <option value="reward-1">Reward 1</option>
+      <option value="reward-2">Reward 2</option>
+      <option value="reward-3">Reward 3</option>
+      <option value="reward-4">Reward 4</option>
+      <option value="reward-5">Reward 5</option>
+    </select>
+    <button onclick="PocketChange.openShop()">Open Shop</button>
+  </p>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam pretium fermentum ligula, faucibus aliquet nisl bibendum non. Ut orci lacus, vehicula eu hendrerit eu, luctus eu sapien. Praesent vel tempus purus. Cras in arcu turpis, id luctus enim. Nunc ac erat nibh. Donec vel leo nibh, ut sollicitudin dolor. Pellentesque nibh nibh, adipiscing id hendrerit at, feugiat id purus. Aliquam pellentesque, nunc ac hendrerit convallis, ante lorem mollis velit, eu hendrerit est mi eget magna.</p>
+    <p>Quisque vitae mauris lacus, eu vehicula lacus. Nulla urna neque, aliquet sed tempor quis, laoreet a odio. Vivamus at eros tortor, non malesuada erat. Suspendisse non imperdiet nisi. Ut mollis, ipsum vitae rutrum vehicula, nulla sem laoreet ipsum, vitae rhoncus mauris sapien eu nisi. Vivamus tellus tellus, posuere non viverra mattis, pellentesque id augue. Vestibulum vestibulum, nulla sed condimentum dictum, est nibh vehicula tortor, vitae rutrum dolor ante non orci. Maecenas blandit erat sollicitudin nulla egestas semper fringilla neque porttitor. Maecenas viverra condimentum purus, id dapibus sem fermentum sit amet. Nunc non lacus non urna rutrum luctus at id tortor. Nunc gravida tempor tellus, eget pellentesque justo dignissim sit amet. Mauris convallis ipsum sit amet felis congue blandit. In aliquet dolor vitae neque molestie consectetur. Cras lorem quam, consequat in euismod vitae, condimentum ac urna.</p>
+    <p>Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aliquam fringilla imperdiet mi, nec volutpat diam adipiscing nec. Etiam volutpat vehicula lobortis. Sed at ipsum dui. Aliquam pretium iaculis convallis. Aliquam vulputate odio eu nisi blandit ut auctor tellus scelerisque. Nunc gravida eros sed tellus vestibulum eu suscipit nibh tincidunt.</p>
+    
+    <!-- Social Buttons -->
+    <div class="fb-like" data-href="http://pocketchange.com" data-width="450" data-layout="box_count" data-show-faces="false" data-send="false"></div>
+    <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pocketchange.com" data-via="ianmcdaniel" data-count="vertical">Tweet</a>
+    <a href="http://twitter.com/pocketchangecom" class="twitter-follow-button" data-show-count="false">Follow @pocketchangecom</a>
+
+    <!-- Comments -->
+    <br><br>
+    <div class="fb-comments" data-href="http://localhost:8888" data-width="500" data-num-posts="1"></div>
+    <br><br><br><br>
+
+
+    <!-- PocketChange JS -->
+    <script src="../dist/pocketchange-js-sdk.dev.js"></script>
+    <script>
+
+      var environments = {
+        'production':{
+          host:'https://pocketchange.com',
+          apikey: '001a6e1bc90c253fdaae43e5db8c3afc192768ae',
+          user_id: '2512592'
+        },
+        'sandbox':{
+          host:'https://sandbox.pocketchange.com',
+          apikey: '001a6e1bc90c253fdaae43e5db8c3afc192768ae',
+          user_id: '350'
+        },
+        'development':{
+          host: "http://172.16.0.236:3000",
+          apikey: "a3dbc061b01b3ac262ede940e28143f740b8697e",
+          user_id: '18'
+        }
+      }
+
+
+      function setEnvironment(selector) {
+        var env = selector.value || "production";
+
+        window.localStorage.setItem('env', env);
+          
+        if(PocketChange.isInitialized()) {
+          PocketChange.client.apiKey = environments[env].apikey;
+          PocketChange.client.options.host = environments[env].host;
+        } else {
+          PocketChange.initialize(environments[env].apikey, {
+            host: environments[env].host,
+            testMode:false,
+            achievements: ['facebook:*','twitter:*']
+          });
+        }
+
+        if(environments[env].user_id) {
+          var reset_url = environments[env].host + "/admin/users/" + environments[env].user_id + "/remove_rewards";
+          document.getElementById('reset').setAttribute('action', reset_url)
+        }
+
+      }
+
+
+      
+
+
+
+      var env_selector = document.getElementById('env_selector');
+      if(window.localStorage.getItem('env')) {
+        env_selector.value = window.localStorage.getItem('env');
+      }
+      
+      setEnvironment(document.getElementById('env_selector'));
+    </script>
+
+  </body>
+</html>

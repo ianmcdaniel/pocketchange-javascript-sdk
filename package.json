@@ -1,0 +1,34 @@
+{
+  "name": "pocketchange-js-sdk",
+  "title": "Pocket Change Javascript SDK",
+  "version": "0.1.5",
+  "description": "Pocket Change's Javascript SDK",
+  "homepage": "https://github.com/pocketchange/pocketchange-javascript-sdk",
+
+  "author": {
+    "name": "Ian McDaniel",
+    "email": "ian@pocketchange.com"
+  },
+
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pocketchange/pocketchange-javascript-sdk"
+  },
+
+  "scripts": {
+    "test": "grunt test",
+    "build": "grunt build"
+  },
+
+  "devDependencies": {
+    "grunt": "*",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-jshint": "*",
+    "grunt-contrib-concat": "*",
+    "grunt-contrib-qunit": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-contrib-connect": "*",
+    "grunt-version": "*",
+    "phantomjs": "1.8.1-1"
+  }
+}
